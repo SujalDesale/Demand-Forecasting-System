@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="analytics-header">
+    <h1>📊 Demand Forecast</h1>
+    <p>Predict future sales using Machine Learning</p>
+</div>
+
+<!-- FORECAST CARD -->
+<div class="forecast-container">
+
+    <div class="forecast-card">
+        <h2>🔮 Predict Sales</h2>
+
+        <form method="POST" class="forecast-form">
+            <input 
+                type="number" 
+                name="month" 
+                placeholder="Enter Month (1-12)" 
+                min="1" max="12" required
+            >
+
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction %}
+        <div class="result-box">
+            <h3>📈 Predicted Sales</h3>
+            <p>₹ {{ prediction }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- INFO CARDS -->
+    <div class="forecast-info-grid">
+        <div class="info-box">
+            <span>Model Used</span>
+            <strong>Linear Regression</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Input Feature</span>
+            <strong>Month</strong>
+        </div>
+
+        <div class="info-box">
+            <span>Prediction Type</span>
+            <strong>Sales Forecast</strong>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

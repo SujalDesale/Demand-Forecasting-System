@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="analytics-header">
+    <h1>📊 Business Dashboard</h1>
+    <p>Overview of your sales performance</p>
+</div>
+
+<!-- KPI -->
+<div class="analytics-info-grid">
+    <div class="info-box">
+        <span>Total Sales</span>
+        <strong>₹ {{ total_sales }}</strong>
+    </div>
+    <div class="info-box">
+        <span>Average Sales</span>
+        <strong>₹ {{ avg_sales }}</strong>
+    </div>
+    <div class="info-box">
+        <span>Maximum Sales</span>
+        <strong>₹ {{ max_sales }}</strong>
+    </div>
+</div>
+
+<!-- EXTRA -->
+<div class="analytics-info-grid">
+    <div class="info-box">
+        <span>Orders</span>
+        <strong>120</strong>
+    </div>
+    <div class="info-box">
+        <span>Customers</span>
+        <strong>85</strong>
+    </div>
+    <div class="info-box">
+        <span>Growth</span>
+        <strong style="color: green;">+12%</strong>
+    </div>
+</div>
+
+<!-- QUICK ACTIONS -->
+<div class="analytics-cards">
+    <a href="/analytics" class="analytics-card">
+        <h3>📈 View Analytics</h3>
+        <p>Detailed insights</p>
+    </a>
+
+    <a href="/forecast" class="analytics-card">
+        <h3>🔮 Forecast</h3>
+        <p>Predict future sales</p>
+    </a>
+
+    <div class="analytics-card">
+        <h3>📊 Reports</h3>
+        <p>Download reports</p>
+    </div>
+
+    <div class="analytics-card">
+        <h3>⚙️ Settings</h3>
+        <p>Manage system</p>
+    </div>
+</div>
+
+<!-- 🔥 INSIGHTS + MINI CHART -->
+<div style="display:grid; grid-template-columns:2fr 1fr; gap:20px; margin-bottom:30px;">
+
+    <!-- INSIGHTS -->
+    <div class="chart-panel">
+        <h2>📌 AI Insights</h2>
+        <ul style="line-height: 2;">
+            <li>📈 Highest sales in <b>Month {{ best_month }}</b></li>
+            <li>📉 Lowest sales in <b>Month {{ worst_month }}</b></li>
+            <li>⚡ Strong growth trend detected</li>
+            <li>💡 Consider boosting marketing in low months</li>
+        </ul>
+    </div>
+
+    <!-- MINI CHART -->
+    <div class="chart-panel">
+        <h2>📊 Quick View</h2>
+        <canvas id="miniChart"></canvas>
+    </div>
+
+</div>
+
+<!-- MAIN CHART -->
+<div class="chart-panel">
+    <h2>📉 Sales Trend</h2>
+    <canvas id="mainChart"></canvas>
+</div>
+
+<!-- BOTTOM SECTION -->
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+
+    <!-- TOP MONTHS -->
+    <div class="chart-panel">
+        <h2>🔥 Top Months</h2>
+        <canvas id="topChart"></canvas>
+    </div>
+
+    <!-- GROWTH SUMMARY -->
+    <div class="chart-panel">
+        <h2>📊 Growth Overview</h2>
+        <canvas id="growthChart"></canvas>
+    </div>
+
+</div>
+
+<script>
+    const months = JSON.parse('{{ months | tojson | safe }}');
+    const sales = JSON.parse('{{ sales | tojson | safe }}');
+
+    // MAIN CHART
+    new Chart(document.getElementById("mainChart"), {
+        type: "line",
+        data: {
+            labels: months,
+            datasets: [{
+                label: "Sales",
+                data: sales,
+                fill: true,
+                tension: 0.4,
+                borderWidth: 3
+            }]
+        }
+    });
+
+    // MINI CHART
+    new Chart(document.getElementById("miniChart"), {
+        type: "bar",
+        data: {
+            labels: months,
+            datasets: [{
+                label: "Sales",
+                data: sales
+            }]
+        }
+    });
+
+    // TOP MONTHS
+    const sorted = [...sales]
+        .map((v, i) => ({ m: months[i], s: v }))
+        .sort((a, b) => b.s - a.s)
+        .slice(0, 5);
+
+    new Chart(document.getElementById("topChart"), {
+        type: "bar",
+        data: {
+            labels: sorted.map(x => x.m),
+            datasets: [{
+                label: "Top Sales",
+                data: sorted.map(x => x.s)
+            }]
+        }
+    });
+
+    // GROWTH CHART
+    const growth = sales.map((val, i) =>
+        i === 0 ? 0 : ((val - sales[i - 1]) / sales[i - 1]) * 100
+    );
+
+    new Chart(document.getElementById("growthChart"), {
+        type: "line",
+        data: {
+            labels: months,
+            datasets: [{
+                label: "Growth %",
+                data: growth,
+                tension: 0.4
+            }]
+        }
+    });
+</script>
+
+{% endblock %}

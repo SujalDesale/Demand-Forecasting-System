@@ -1,0 +1,199 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="analytics-header">
+    <h1>📊 Sales Analytics Dashboard</h1>
+    <p>Click any analytics card to view insights</p>
+</div>
+
+<!-- ANALYTICS CARDS -->
+<div class="analytics-cards">
+    <div class="analytics-card active" onclick="showChart('trend', this)">
+        <h3>📈 Sales Trend</h3>
+        <p>Monthly performance</p>
+    </div>
+
+    <div class="analytics-card" onclick="showChart('bar', this)">
+        <h3>📊 Monthly Comparison</h3>
+        <p>Compare months</p>
+    </div>
+
+    <div class="analytics-card" onclick="showChart('pie', this)">
+        <h3>🥧 Sales Distribution</h3>
+        <p>Contribution share</p>
+    </div>
+
+    <div class="analytics-card" onclick="showChart('top', this)">
+        <h3>🔥 Top Months</h3>
+        <p>Best performers</p>
+    </div>
+
+    <div class="analytics-card" onclick="showChart('table', this)">
+        <h3>📋 Data Table</h3>
+        <p>View raw data</p>
+    </div>
+</div>
+
+<!-- KPI CARDS -->
+<div class="analytics-info-grid">
+    <div class="info-box">
+        <span>Total Sales</span>
+        <strong>₹ {{ total_sales }}</strong>
+    </div>
+
+    <div class="info-box">
+        <span>Average Sales</span>
+        <strong>₹ {{ avg_sales }}</strong>
+    </div>
+
+    <div class="info-box">
+        <span>Maximum Sales</span>
+        <strong>₹ {{ max_sales }}</strong>
+    </div>
+</div>
+
+<!-- EXTRA INSIGHTS -->
+<div class="analytics-info-grid">
+    <div class="info-box">
+        <span>Best Month</span>
+        <strong>Month {{ best_month }}</strong>
+    </div>
+
+    <div class="info-box">
+        <span>Worst Month</span>
+        <strong>Month {{ worst_month }}</strong>
+    </div>
+
+    <div class="info-box">
+        <span>Growth Rate</span>
+        <strong>{{ growth }}%</strong>
+    </div>
+</div>
+
+<!-- DYNAMIC PANEL -->
+<div class="chart-panel">
+
+    <div class="chart-panel-header">
+        <h2 id="chartTitle">Sales Trend</h2>
+    </div>
+
+    <!-- CHART -->
+    <canvas id="mainChart"></canvas>
+
+    <!-- TABLE VIEW -->
+    <div id="tableView" style="display:none;">
+        <table>
+            <tr>
+                <th>Month</th>
+                <th>Sales</th>
+            </tr>
+
+            {% for i in range(months|length) %}
+            <tr>
+                <td>{{ months[i] }}</td>
+                <td>{{ sales[i] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+<script>
+    // DATA FROM FLASK
+    const months = JSON.parse('{{ months | tojson | safe }}');
+    const sales = JSON.parse('{{ sales | tojson | safe }}');
+    const topMonths = JSON.parse('{{ top_months | tojson | safe }}');
+    const topSales = JSON.parse('{{ top_sales | tojson | safe }}');
+
+    let chart = null;
+
+    function showChart(type, element) {
+        document.querySelectorAll(".analytics-card").forEach(c => c.classList.remove("active"));
+        element.classList.add("active");
+
+        const ctx = document.getElementById("mainChart").getContext("2d");
+        const table = document.getElementById("tableView");
+
+        if (chart) chart.destroy();
+
+        // TABLE VIEW
+        if (type === "table") {
+            document.getElementById("mainChart").style.display = "none";
+            table.style.display = "block";
+            document.getElementById("chartTitle").innerText = "Sales Data Table";
+            return;
+        }
+
+        // SHOW CHART
+        table.style.display = "none";
+        document.getElementById("mainChart").style.display = "block";
+
+        let config = {};
+
+        if (type === "trend") {
+            config = {
+                type: "line",
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: "Sales Trend",
+                        data: sales,
+                        tension: 0.4,
+                        borderWidth: 3
+                    }]
+                }
+            };
+            document.getElementById("chartTitle").innerText = "Sales Trend";
+        }
+
+        else if (type === "bar") {
+            config = {
+                type: "bar",
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: "Monthly Sales",
+                        data: sales
+                    }]
+                }
+            };
+            document.getElementById("chartTitle").innerText = "Monthly Comparison";
+        }
+
+        else if (type === "pie") {
+            config = {
+                type: "pie",
+                data: {
+                    labels: months,
+                    datasets: [{
+                        data: sales
+                    }]
+                }
+            };
+            document.getElementById("chartTitle").innerText = "Sales Distribution";
+        }
+
+        else if (type === "top") {
+            config = {
+                type: "bar",
+                data: {
+                    labels: topMonths,
+                    datasets: [{
+                        label: "Top Sales",
+                        data: topSales,
+                        backgroundColor: "#2563eb"
+                    }]
+                }
+            };
+            document.getElementById("chartTitle").innerText = "Top Performing Months";
+        }
+
+        chart = new Chart(ctx, config);
+    }
+
+    // DEFAULT LOAD
+    showChart("trend", document.querySelector(".analytics-card"));
+</script>
+
+{% endblock %}

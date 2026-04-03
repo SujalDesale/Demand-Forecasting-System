@@ -1,0 +1,333 @@
+/* GLOBAL */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+    color: #1e293b;
+}
+
+/* SIDEBAR */
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    position: fixed;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(14px);
+    padding: 20px;
+    border-right: 1px solid rgba(0,0,0,0.05);
+}
+
+.sidebar h2 {
+    margin-bottom: 30px;
+}
+
+.sidebar a {
+    display: block;
+    margin: 12px 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    color: #1e293b;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.sidebar a:hover {
+    background: rgba(37, 99, 235, 0.1);
+}
+
+.sidebar a.active {
+    background: #2563eb;
+    color: white;
+}
+
+/* MAIN */
+.main {
+    margin-left: 220px;
+}
+
+/* TOPBAR */
+.topbar {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(14px);
+    padding: 18px 30px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-weight: 600;
+}
+
+/* ✅ FIXED CONTENT ALIGNMENT (IMPORTANT) */
+.content {
+    padding: 30px 50px;
+    width: calc(100% - 140px); /* FULL WIDTH minus sidebar */
+    max-width: none;
+}
+
+/* ---------------- DASHBOARD CARDS ---------------- */
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.card {
+    padding: 25px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    transition: all 0.25s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px) scale(1.02);
+}
+
+.card span {
+    font-size: 26px;
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+    color: #2563eb;
+}
+
+/* ---------------- FILTER ---------------- */
+.filter {
+    margin-bottom: 30px;
+}
+
+select {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+/* ================= YOUR ORIGINAL ANALYTICS (UNCHANGED + IMPROVED) ================= */
+
+.analytics-header {
+    margin-bottom: 24px;
+}
+
+.analytics-header h1 {
+    margin: 0 0 8px;
+    font-size: 36px;
+    color: #1e293b;
+}
+
+.analytics-header p {
+    margin: 0;
+    color: #64748b;
+}
+
+/* FIX: better spacing */
+.analytics-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin: 32px 0;
+}
+
+.analytics-card {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.analytics-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
+}
+
+.analytics-card.active {
+    border: 1px solid #2563eb;
+    box-shadow: 0 12px 30px rgba(37, 99, 235, 0.18);
+    background: linear-gradient(135deg, rgba(255,255,255,0.82), rgba(219,234,254,0.75));
+}
+
+.analytics-card h3 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    color: #0f172a;
+}
+
+.analytics-card p {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+}
+
+/* KPI */
+.analytics-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.info-box {
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(16px);
+    border-radius: 18px;
+    padding: 20px 24px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.info-box span {
+    display: block;
+    font-size: 14px;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+.info-box strong {
+    font-size: 28px;
+    color: #2563eb;
+    font-weight: 700;
+}
+
+/* ✅ FIXED CHART PANEL (IMPORTANT) */
+.chart-panel {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(16px);
+    border-radius: 22px;
+    padding: 24px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    margin-bottom: 28px;
+}
+
+/* FIX: prevent overflow */
+#dynamicChart {
+    width: 100% !important;
+    height: 350px !important;
+}
+
+/* TABLE */
+.table-panel {
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(14px);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #2563eb;
+    color: white;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+    .analytics-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .analytics-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    .analytics-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .content {
+        padding: 20px;
+    }
+}
+
+/* ---------------- FORECAST PAGE ---------------- */
+.forecast-container {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* CARD */
+.forecast-card {
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(16px);
+    border-radius: 22px;
+    padding: 30px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    max-width: 500px;
+}
+
+/* FORM */
+.forecast-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.forecast-form input {
+    flex: 1;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.forecast-form button {
+    padding: 12px 18px;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.forecast-form button:hover {
+    background: #1d4ed8;
+}
+
+/* RESULT */
+.result-box {
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    text-align: center;
+}
+
+.result-box h3 {
+    margin-bottom: 8px;
+}
+
+.result-box p {
+    font-size: 26px;
+    font-weight: bold;
+    color: #2563eb;
+}
+
+/* INFO GRID */
+.forecast-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 900px) {
+    .forecast-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
